@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= htmlWebpackPlugin.options.title %></title>
-</head>
-<body>
-    <h1>Weather App The Odin Project</h1>
+  </head>
+  <header>
+    <h1>Weather App</h1>
+  </header>
+  <body>
     <div class="container">
-        <form action="submit">
-        <input type="search" class="city-search-input">
+      <form action="submit">
+        <input type="search" class="city-search-input" />
         <div class="button-container">
-            <button class="search-button">Submit</button>
+          <button class="search-button">Submit</button>
         </div>
-        </form>
-        </div>
-</body>
+      </form>
+      <div class="forecast-container"></div>
+    </div>
+  </body>
 </html>
