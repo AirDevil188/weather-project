@@ -1,10 +1,9 @@
 import "../styles/main.css";
-import clearSkyWeather from "../assets/clear_sky_day.png";
 import UI from "./ui";
-export const searchInputKeyWord = document.querySelector(".city-search-input");
 
 /* async function so that my WeatherAPI can fetch the data */
 
+// fetch the  data from the Weather API //
 export async function getData(location) {
   try {
     const data = await fetch(
@@ -12,6 +11,7 @@ export async function getData(location) {
       { mode: "cors" }
     );
     const result = await data.json();
+    console.log(result);
 
     if (location == "")
       throw new Error(
@@ -20,9 +20,16 @@ export async function getData(location) {
     else if (!data.ok) {
       throw new Error(`Sorry, ${location} is not a valid city!`);
     }
+
+    UI.appendWeatherInformation(
+      result.location.name,
+      result.current.temp_c,
+      result.current.condition.text,
+      result.current.is_day
+    );
     return result;
   } catch (error) {
-    alert(error);
+    alert(error, "");
     return null;
   }
 }
