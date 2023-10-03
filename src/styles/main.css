@@ -48,7 +48,6 @@ header {
 
 table {
   width: 100%;
-  padding: 0.5rem;
   text-align: center;
   color: #fff;
 }
@@ -109,7 +108,7 @@ input:focus {
 
 .city-search-input {
   padding: 1rem;
-  width: 300px;
+  width: 250px;
   border: 2px solid var(--search-bar-border-color);
   height: 30px;
   border-radius: 15px;
