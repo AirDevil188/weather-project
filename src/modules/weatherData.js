@@ -7,7 +7,7 @@ import UI from "./ui";
 export async function getData(location) {
   try {
     const data = await fetch(
-      ` http://api.weatherapi.com/v1/forecast.json?key=c25c0f620d434f86841143300232209&q=${location}&days=6&aqi=no&alerts=no`,
+      ` https://api.weatherapi.com/v1/forecast.json?key=c25c0f620d434f86841143300232209&q=${location}&days=6&aqi=no&alerts=no`,
       { mode: "cors" }
     );
     const result = await data.json();

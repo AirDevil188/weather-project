@@ -116,7 +116,7 @@ var UI = /*#__PURE__*/function () {
     key: "loadHome",
     value: function loadHome() {
       (0,_initializeButtons__WEBPACK_IMPORTED_MODULE_1__["default"])();
-      (0,_weatherData__WEBPACK_IMPORTED_MODULE_0__.getData)("Apatin");
+      (0,_weatherData__WEBPACK_IMPORTED_MODULE_0__.getData)("London");
     }
 
     // render weather information on the screen //
@@ -444,7 +444,7 @@ function _getData() {
         case 0:
           _context.prev = 0;
           _context.next = 3;
-          return fetch(" http://api.weatherapi.com/v1/forecast.json?key=c25c0f620d434f86841143300232209&q=".concat(location, "&days=6&aqi=no&alerts=no"), {
+          return fetch(" https://api.weatherapi.com/v1/forecast.json?key=c25c0f620d434f86841143300232209&q=".concat(location, "&days=6&aqi=no&alerts=no"), {
             mode: "cors"
           });
         case 3:
@@ -894,4 +894,4 @@ document.addEventListener("DOMContentLoaded", _modules_ui__WEBPACK_IMPORTED_MODU
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle.6346cd91b7477b13da1e.js.map
+//# sourceMappingURL=bundle.4b10f95c878d08825edd.js.map

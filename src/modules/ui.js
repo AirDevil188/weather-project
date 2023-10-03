@@ -37,7 +37,7 @@ import thunderstormSnowNightIcon from "../assets/thunderstorms-night-snow.svg";
 export default class UI {
   static loadHome() {
     initializeButtons();
-    getData("Apatin");
+    getData("London");
   }
 
   // render weather information on the screen //
