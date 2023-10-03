@@ -11,7 +11,6 @@ export async function getData(location) {
       { mode: "cors" }
     );
     const result = await data.json();
-    console.log(result);
 
     if (location == "")
       throw new Error(
@@ -24,9 +23,19 @@ export async function getData(location) {
     UI.appendWeatherInformation(
       result.location.name,
       result.current.temp_c,
+      result.forecast.forecastday[0].day.mintemp_c,
+      result.forecast.forecastday[0].day.maxtemp_c,
+      result.current.feelslike_c,
+      result.current.humidity,
       result.current.condition.text,
       result.current.is_day
     );
+    UI.appendWeatherConditionData(
+      UI.getWeatherImageContainer(),
+      result.current.condition.text,
+      result.current.is_day
+    );
+    UI.appendForecast(result.forecast.forecastday);
     return result;
   } catch (error) {
     alert(error, "");

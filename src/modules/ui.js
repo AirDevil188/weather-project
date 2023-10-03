@@ -1,4 +1,7 @@
+import { getData } from "./weatherData";
 import initializeButtons from "./initializeButtons";
+
+/* importing weather icons */
 import notFoundIcon from "../assets/not-available.svg";
 import clearSunnyDayIcon from "../assets/clear-day.svg";
 import clearNightDayIcon from "../assets/clear-night.svg";
@@ -6,6 +9,8 @@ import cloudyIcon from "../assets/cloudy.svg";
 import rainIcon from "../assets/rain.svg";
 import rainPartlyCloudyDay from "../assets/partly-cloudy-day-rain.svg";
 import rainPartlyCloudyNight from "../assets/partly-cloudy-night-rain.svg";
+import drizzlePartlyDrizzleDay from "../assets/partly-cloudy-day-drizzle.svg";
+import drizzlePartlyDrizzleNight from "../assets/partly-cloudy-night-drizzle.svg";
 import fogDayIcon from "../assets/fog-day.svg";
 import fogNightIcon from "../assets/fog-night.svg";
 import snowIcon from "../assets/snow.svg";
@@ -32,41 +37,205 @@ import thunderstormSnowNightIcon from "../assets/thunderstorms-night-snow.svg";
 export default class UI {
   static loadHome() {
     initializeButtons();
+    getData("Apatin");
   }
 
   // render weather information on the screen //
-  static appendWeatherInformation(location, temperature, condition, isDay) {
+  static appendWeatherInformation(
+    location,
+    temperature,
+    tempCMin,
+    tempCMax,
+    feelsLike,
+    humidity,
+    condition
+  ) {
     this.clearContentContainer();
+
+    const weatherContainer = document.createElement("div");
+    const locationInformationContainer = document.createElement("div");
     const locationName = document.createElement("h3");
-    const temperaturePara = document.createElement("p");
-    const imageElement = document.createElement("img");
+    const weatherConditionContainer = document.createElement("div");
+    const weatherConditionPara = document.createElement("p");
+    const weatherInformationContainer = document.createElement("div");
+    const weatherImageContainer = document.createElement("div");
+    const additionalInformationContainer = document.createElement("div");
+
+    weatherContainer.classList.add("weather-container");
+
+    weatherInformationContainer.classList.add("weather-information-container");
+    weatherImageContainer.classList.add("weather-image-container");
+    locationInformationContainer.classList.add(
+      "location-information-container"
+    );
+    weatherConditionPara.classList.add("weather-condition");
+    weatherConditionContainer.classList.add("weather-condition-container");
+    additionalInformationContainer.classList.add("additional-info-container");
+
+    const tempPara = document.createElement("p");
+    const minMaxTempPara = document.createElement("p");
+    const humidityPara = document.createElement("p");
+
+    tempPara.classList.add("current-temp");
+    minMaxTempPara.classList.add("min-max-temp");
+    humidityPara.classList.add("humidity");
 
     locationName.textContent = location;
-    temperaturePara.textContent = Math.floor(temperature);
-    this.getContentContainer().appendChild(locationName);
-    this.getContentContainer().appendChild(temperaturePara);
+    weatherConditionPara.textContent = condition;
+    tempPara.textContent = Math.floor(temperature);
+    minMaxTempPara.textContent =
+      Math.floor(tempCMin) +
+      "° / " +
+      Math.floor(tempCMax) +
+      "° " +
+      "Feels Like " +
+      Math.floor(feelsLike) +
+      "° ";
+    humidityPara.textContent = humidity;
 
-    // based on weather condition different animated icons will be rendered on the screen //
+    this.getContentContainer().appendChild(weatherContainer);
+    weatherContainer.appendChild(locationInformationContainer);
+    locationInformationContainer.appendChild(locationName);
+    weatherContainer.appendChild(weatherInformationContainer);
+    weatherInformationContainer.appendChild(weatherImageContainer);
+    weatherContainer.appendChild(additionalInformationContainer);
+
+    weatherInformationContainer.appendChild(weatherConditionContainer);
+    weatherConditionContainer.appendChild(weatherConditionPara);
+    additionalInformationContainer.appendChild(minMaxTempPara);
+    additionalInformationContainer.appendChild(humidityPara);
+    weatherImageContainer.appendChild(tempPara);
+  }
+
+  static appendForecast(forecastObject) {
+    this.clearForecastContainer();
+    const forecastTableContainer = document.createElement("div");
+
+    let threeDayArray = forecastObject.slice(1, 4);
+    forecastTableContainer.classList.add("table-container");
+
+    this.getForecastContainer().appendChild(forecastTableContainer);
+
+    forecastTableContainer.appendChild(this.createTable(3, 5));
+
+    for (let i = 0; i < this.getAlHeadCells().length; i++) {
+      this.getAlHeadCells()[0].textContent = "Date";
+      this.getAlHeadCells()[1].textContent = "Min/Max Temperature";
+      this.getAlHeadCells()[2].textContent = "Icon";
+      this.getAlHeadCells()[3].textContent = "Weather Condition";
+      this.getAlHeadCells()[4].textContent = "Sunrise/Sunset Time";
+
+      this.getAlHeadCells()[2].classList.add("table-header-icon");
+    }
+
+    for (let i = 0; i < this.getAllDataCells().length; i++) {
+      this.getAllDataCells()[0].textContent = threeDayArray[0].date;
+      this.getAllDataCells()[1].textContent =
+        Math.floor(threeDayArray[0].day.mintemp_c) +
+        "°" +
+        " / " +
+        Math.floor(threeDayArray[0].day.maxtemp_c) +
+        "°";
+      this.getAllDataCells()[3].textContent =
+        threeDayArray[0].day.condition.text;
+      this.getAllDataCells()[4].textContent =
+        threeDayArray[0].astro.sunrise + " / " + threeDayArray[0].astro.sunset;
+
+      this.getAllDataCells()[5].textContent = threeDayArray[1].date;
+      this.getAllDataCells()[6].textContent =
+        Math.floor(threeDayArray[1].day.mintemp_c) +
+        "°" +
+        " / " +
+        Math.floor(threeDayArray[1].day.maxtemp_c) +
+        "°";
+      this.getAllDataCells()[8].textContent =
+        threeDayArray[1].day.condition.text;
+      this.getAllDataCells()[9].textContent =
+        threeDayArray[1].astro.sunrise + " / " + threeDayArray[1].astro.sunset;
+
+      this.getAllDataCells()[10].textContent = threeDayArray[2].date;
+      this.getAllDataCells()[11].textContent =
+        Math.floor(threeDayArray[2].day.mintemp_c) +
+        "°" +
+        " / " +
+        Math.floor(threeDayArray[2].day.maxtemp_c) +
+        "°";
+      this.getAllDataCells()[13].textContent =
+        threeDayArray[2].day.condition.text;
+      this.getAllDataCells()[14].textContent =
+        threeDayArray[2].astro.sunrise + " / " + threeDayArray[2].astro.sunset;
+    }
+
+    this.appendWeatherConditionData(
+      this.getAllDataCells()[2],
+      threeDayArray[0].day.condition.text,
+      1
+    );
+    this.appendWeatherConditionData(
+      this.getAllDataCells()[7],
+      threeDayArray[1].day.condition.text,
+      1
+    );
+    this.appendWeatherConditionData(
+      this.getAllDataCells()[12],
+      threeDayArray[2].day.condition.text,
+      1
+    );
+
+    this.getAllDataCells()[2].classList.add("data-icon");
+    this.getAllDataCells()[7].classList.add("data-icon");
+    this.getAllDataCells()[12].classList.add("data-icon");
+  }
+
+  static createTable(tr, td) {
+    const forecastTable = document.createElement("table");
+    const tableHeader = document.createElement("thead");
+    const tableBody = document.createElement("tbody");
+    const tableRow = document.createElement("tr");
+
+    forecastTable.appendChild(tableHeader);
+    tableHeader.appendChild(tableRow);
+    for (let k = 0; k < td; k++) {
+      const tableHead = document.createElement("th");
+      tableRow.appendChild(tableHead);
+    }
+
+    forecastTable.appendChild(tableBody);
+    for (let j = 0; j < tr; j++) {
+      const tableRowForecast = document.createElement("tr");
+
+      tableBody.appendChild(tableRowForecast);
+      for (let i = 0; i < td; i++) {
+        const tableDataForecast = document.createElement("td");
+        tableRowForecast.appendChild(tableDataForecast);
+      }
+    }
+
+    return forecastTable;
+  }
+
+  static appendWeatherConditionData(element, condition, isDay) {
+    const imageElement = document.createElement("img");
 
     switch (true) {
       case (condition === "Clear" || condition === "Sunny") && isDay === 1:
         imageElement.src = clearSunnyDayIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
 
       case (condition === "Clear" || condition === "Sunny") && isDay === 0:
         imageElement.src = clearNightDayIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
       case condition === "Cloudy":
         imageElement.src = cloudyIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
       case condition === "Light rain" ||
         condition === "Moderate rain" ||
         condition === "Heavy rain":
         imageElement.src = rainIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
       case (condition === "Patchy light rain" ||
         condition === "Moderate rain at times" ||
@@ -77,7 +246,7 @@ export default class UI {
         condition === "Patchy rain possible") &&
         isDay === 1:
         imageElement.src = rainPartlyCloudyDay;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
 
       case (condition === "Patchy light rain" ||
@@ -89,7 +258,7 @@ export default class UI {
         condition === "Patchy rain possible") &&
         isDay === 0:
         imageElement.src = rainPartlyCloudyNight;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
 
       case condition === "Light freezing rain" ||
@@ -97,45 +266,51 @@ export default class UI {
         condition === "Light sleet" ||
         condition === "Moderate or heavy sleet":
         imageElement.src = sleetIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
 
       case (condition === "Light sleet showers" ||
         condition === "Moderate or heavy sleet showers") &&
         isDay === 1:
         imageElement.src = sleetPartlyCloudyDayIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
 
       case (condition === "Light sleet showers" ||
         condition === "Moderate or heavy sleet showers") &&
         isDay === 0:
         imageElement.src = sleetPartlyCloudyNightIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
 
-      case (condition === "Fog" || condition === "Freezing fog") && isDay === 1:
+      case (condition === "Fog" ||
+        condition === "Freezing fog" ||
+        condition === "Mist") &&
+        isDay === 1:
         imageElement.src = fogDayIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
-      case (condition === "Fog" || condition === "Freezing fog") && isDay === 0:
+      case (condition === "Fog" ||
+        condition === "Freezing fog" ||
+        condition === "Mist") &&
+        isDay === 0:
         imageElement.src = fogNightIcon;
         break;
       case condition === "Overcast" && isDay === 1:
         imageElement.src = overcastDayIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
       case condition === "Overcast" && isDay === 0:
         imageElement.src = overcastNightIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
       case condition === "Partly cloudy" && isDay === 1:
         imageElement.src = partlyCloudyDayIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
       case condition === "Partly cloudy" && isDay === 0:
         imageElement.src = partlyCloudyNightIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
       case condition === "Light snow" ||
         condition === "Heavy snow" ||
@@ -143,7 +318,17 @@ export default class UI {
         condition === "Blizzard" ||
         condition === "Blowing snow":
         imageElement.src = snowIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
+        break;
+
+      case condition.includes("drizzle") && isDay === 1:
+        imageElement.src = drizzlePartlyDrizzleDay;
+        element.insertAdjacentElement("afterbegin", imageElement);
+        break;
+
+      case condition.includes("drizzle") && isDay === 0:
+        imageElement.src = drizzlePartlyDrizzleNight;
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
 
       case (condition === "Patchy snow possible" ||
@@ -154,7 +339,7 @@ export default class UI {
         condition === "Moderate or heavy snow showers ") &&
         isDay === 1:
         imageElement.src = partlyCloudySnowDayIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
 
       case (condition === "Patchy snow possible" ||
@@ -165,67 +350,67 @@ export default class UI {
         condition === "Moderate or heavy snow showers ") &&
         isDay === 0:
         imageElement.src = partlyCloudySnowNightIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
       case condition === "Ice pellets" ||
         condition === "Light showers of ice pellets":
         imageElement.src = hailIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
 
       case condition === "Moderate or heavy showers of ice pellets" &&
         isDay === 1:
         imageElement.src = hailPartlyCloudyDayIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
 
       case condition === "Moderate or heavy showers of ice pellets" &&
         isDay === 0:
         imageElement.src = hailPartlyCloudyNightIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
 
       case (condition === "Patchy light rain with thunder" ||
         condition === "Moderate or heavy rain with thunder") &&
         isDay === 1:
         imageElement.src = thunderstormRainDayIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
 
       case (condition === "Patchy light rain with thunder" ||
         condition === "Moderate or heavy rain with thunder") &&
         isDay === 0:
         imageElement.src = thunderstormRainNightIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
 
       case condition === "Thundery outbreaks possible" && isDay === 1:
         imageElement.src = thunderstormDayIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
 
       case condition === "Thundery outbreaks possible" && isDay === 0:
         imageElement.src = thunderstormNightIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
 
       case (condition === "Patchy light snow with thunder" ||
         condition === "Moderate or heavy snow with thunder") &&
         isDay === 1:
         imageElement.src = thunderstormSnowDayIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
 
       case (condition === "Patchy light snow with thunder" ||
         condition === "Moderate or heavy snow with thunder") &&
         isDay === 0:
         imageElement.src = thunderstormSnowNightIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
 
       default:
         imageElement.src = notFoundIcon;
-        this.getContentContainer().appendChild(imageElement);
+        element.insertAdjacentElement("afterbegin", imageElement);
         break;
     }
   }
@@ -235,8 +420,40 @@ export default class UI {
     this.getContentContainer().textContent = "";
   }
 
+  static clearForecastContainer() {
+    this.getForecastContainer().textContent = "";
+  }
+
+  static getMainContainer() {
+    return document.querySelector(".main-container");
+  }
+
   // get content container //
   static getContentContainer() {
     return document.querySelector(".content-container");
+  }
+
+  static getIconContainer() {
+    return document.querySelector(".icon-container");
+  }
+
+  static getTemperatureContainer() {
+    return document.querySelector(".location-temperature");
+  }
+
+  static getWeatherImageContainer() {
+    return document.querySelector(".weather-image-container");
+  }
+
+  static getAllDataCells() {
+    return document.querySelectorAll("td");
+  }
+
+  static getAlHeadCells() {
+    return document.querySelectorAll("th");
+  }
+
+  static getForecastContainer() {
+    return document.querySelector(".forecast-container");
   }
 }
