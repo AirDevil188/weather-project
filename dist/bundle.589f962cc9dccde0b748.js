@@ -12,14 +12,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ initializeButtons)
 /* harmony export */ });
-/* harmony import */ var _weatherData__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./weatherData */ "./src/modules/weatherData.js");
+/* harmony import */ var _ui__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ui */ "./src/modules/ui.js");
+/* harmony import */ var _weatherData__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./weatherData */ "./src/modules/weatherData.js");
+
 
 var searchInputKeyWord = document.querySelector(".city-search-input");
 function initializeButtons() {
   var searchButton = document.querySelector(".search-button");
+  var changeTempUnitButton = document.querySelector(".change-temp-unit-button");
   searchButton.addEventListener("click", function (e) {
     e.preventDefault();
-    (0,_weatherData__WEBPACK_IMPORTED_MODULE_0__.getData)(searchInputKeyWord.value);
+    (0,_weatherData__WEBPACK_IMPORTED_MODULE_1__.getData)(searchInputKeyWord.value);
+  });
+  changeTempUnitButton.addEventListener("click", function () {
+    changeTempUnitButton.classList.toggle("temp-f");
+    _ui__WEBPACK_IMPORTED_MODULE_0__["default"].changeWeatherUnit();
   });
 }
 
@@ -122,7 +129,7 @@ var UI = /*#__PURE__*/function () {
     // render weather information on the screen //
   }, {
     key: "appendWeatherInformation",
-    value: function appendWeatherInformation(location, temperature, tempCMin, tempCMax, feelsLike, humidity, condition) {
+    value: function appendWeatherInformation(location, temperatureC, temperatureF, tempCMin, tempCMax, tempFMin, tempFMax, feelsLikeC, feelsLikeF, humidity, condition) {
       this.clearContentContainer();
       var weatherContainer = document.createElement("div");
       var locationInformationContainer = document.createElement("div");
@@ -132,6 +139,7 @@ var UI = /*#__PURE__*/function () {
       var weatherInformationContainer = document.createElement("div");
       var weatherImageContainer = document.createElement("div");
       var additionalInformationContainer = document.createElement("div");
+      var changeTempUnitButton = document.querySelector(".change-temp-unit-button");
       weatherContainer.classList.add("weather-container");
       weatherInformationContainer.classList.add("weather-information-container");
       weatherImageContainer.classList.add("weather-image-container");
@@ -147,8 +155,6 @@ var UI = /*#__PURE__*/function () {
       humidityPara.classList.add("humidity");
       locationName.textContent = location;
       weatherConditionPara.textContent = condition;
-      tempPara.textContent = Math.floor(temperature);
-      minMaxTempPara.textContent = Math.floor(tempCMin) + "°C / " + Math.floor(tempCMax) + "°C " + "Feels Like " + Math.floor(feelsLike) + "°C ";
       humidityPara.textContent = humidity;
       this.getContentContainer().appendChild(weatherContainer);
       weatherContainer.appendChild(locationInformationContainer);
@@ -160,11 +166,19 @@ var UI = /*#__PURE__*/function () {
       weatherConditionContainer.appendChild(weatherConditionPara);
       additionalInformationContainer.appendChild(minMaxTempPara);
       additionalInformationContainer.appendChild(humidityPara);
+      if (!changeTempUnitButton.classList.contains("temp-f")) {
+        tempPara.textContent = Math.floor(temperatureC) + "°C ";
+        minMaxTempPara.textContent = Math.floor(tempCMin) + "°C / " + Math.floor(tempCMax) + "°C " + "Feels Like " + Math.floor(feelsLikeC) + "°C ";
+      } else {
+        tempPara.textContent = Math.floor(temperatureF) + "°F ";
+        minMaxTempPara.textContent = Math.floor(tempFMin) + "°F / " + Math.floor(tempFMax) + "°F " + "Feels Like " + Math.floor(feelsLikeF) + "°F ";
+      }
       weatherImageContainer.appendChild(tempPara);
     }
   }, {
     key: "appendForecast",
     value: function appendForecast(forecastObject) {
+      var changeTempUnitButton = document.querySelector(".change-temp-unit-button");
       this.clearForecastContainer();
       var forecastTableContainer = document.createElement("div");
       var threeDayArray = forecastObject.slice(1, 4);
@@ -181,21 +195,27 @@ var UI = /*#__PURE__*/function () {
       }
       for (var _i = 0; _i < this.getAllDataCells().length; _i++) {
         this.getAllDataCells()[0].textContent = threeDayArray[0].date;
-        this.getAllDataCells()[1].textContent = Math.floor(threeDayArray[0].day.mintemp_c) + "°C" + " / " + Math.floor(threeDayArray[0].day.maxtemp_c) + "°C";
         this.getAllDataCells()[3].textContent = threeDayArray[0].day.condition.text;
         this.getAllDataCells()[4].textContent = threeDayArray[0].astro.sunrise + " / " + threeDayArray[0].astro.sunset;
         this.getAllDataCells()[5].textContent = threeDayArray[1].date;
-        this.getAllDataCells()[6].textContent = Math.floor(threeDayArray[1].day.mintemp_c) + "°C" + " / " + Math.floor(threeDayArray[1].day.maxtemp_c) + "°C";
         this.getAllDataCells()[8].textContent = threeDayArray[1].day.condition.text;
         this.getAllDataCells()[9].textContent = threeDayArray[1].astro.sunrise + " / " + threeDayArray[1].astro.sunset;
         this.getAllDataCells()[10].textContent = threeDayArray[2].date;
-        this.getAllDataCells()[11].textContent = Math.floor(threeDayArray[2].day.mintemp_c) + "°C" + " / " + Math.floor(threeDayArray[2].day.maxtemp_c) + "°C";
         this.getAllDataCells()[13].textContent = threeDayArray[2].day.condition.text;
         this.getAllDataCells()[14].textContent = threeDayArray[2].astro.sunrise + " / " + threeDayArray[2].astro.sunset;
       }
       this.appendWeatherConditionData(this.getAllDataCells()[2], threeDayArray[0].day.condition.text, 1);
       this.appendWeatherConditionData(this.getAllDataCells()[7], threeDayArray[1].day.condition.text, 1);
       this.appendWeatherConditionData(this.getAllDataCells()[12], threeDayArray[2].day.condition.text, 1);
+      if (!changeTempUnitButton.classList.contains("temp-f")) {
+        this.getAllDataCells()[1].textContent = Math.floor(threeDayArray[0].day.mintemp_c) + "°C" + " / " + Math.floor(threeDayArray[0].day.maxtemp_c) + "°C";
+        this.getAllDataCells()[6].textContent = Math.floor(threeDayArray[1].day.mintemp_c) + "°C" + " / " + Math.floor(threeDayArray[1].day.maxtemp_c) + "°C";
+        this.getAllDataCells()[11].textContent = Math.floor(threeDayArray[2].day.mintemp_c) + "°C" + " / " + Math.floor(threeDayArray[2].day.maxtemp_c) + "°C";
+      } else {
+        this.getAllDataCells()[1].textContent = Math.floor(threeDayArray[0].day.mintemp_f) + "°F" + " / " + Math.floor(threeDayArray[0].day.maxtemp_f) + "°F";
+        this.getAllDataCells()[6].textContent = Math.floor(threeDayArray[1].day.mintemp_f) + "°F" + " / " + Math.floor(threeDayArray[1].day.maxtemp_f) + "°F";
+        this.getAllDataCells()[11].textContent = Math.floor(threeDayArray[2].day.mintemp_f) + "°F" + " / " + Math.floor(threeDayArray[2].day.maxtemp_f) + "°F";
+      }
       this.getAllDataCells()[2].classList.add("data-icon");
       this.getAllDataCells()[7].classList.add("data-icon");
       this.getAllDataCells()[12].classList.add("data-icon");
@@ -351,6 +371,18 @@ var UI = /*#__PURE__*/function () {
       }
     }
 
+    /* fetch the date again so that we can display F or C units on the screen */
+  }, {
+    key: "changeWeatherUnit",
+    value: function changeWeatherUnit() {
+      var changeTempUnitButton = document.querySelector(".change-temp-unit-button");
+      var h3TitleLocation = document.querySelector("h3").innerText;
+      if (!changeTempUnitButton.classList.contains("temp-f")) {
+        changeTempUnitButton.textContent = "Change to °F";
+      } else changeTempUnitButton.textContent = "Change to °C";
+      (0,_weatherData__WEBPACK_IMPORTED_MODULE_0__.getData)(h3TitleLocation);
+    }
+
     //clear content of forecast container //
   }, {
     key: "clearContentContainer",
@@ -465,7 +497,7 @@ function _getData() {
           }
           throw new Error("Sorry, ".concat(location, " is not a valid city!"));
         case 13:
-          _ui__WEBPACK_IMPORTED_MODULE_1__["default"].appendWeatherInformation(result.location.name, result.current.temp_c, result.forecast.forecastday[0].day.mintemp_c, result.forecast.forecastday[0].day.maxtemp_c, result.current.feelslike_c, result.current.humidity, result.current.condition.text, result.current.is_day);
+          _ui__WEBPACK_IMPORTED_MODULE_1__["default"].appendWeatherInformation(result.location.name, result.current.temp_c, result.current.temp_f, result.forecast.forecastday[0].day.mintemp_c, result.forecast.forecastday[0].day.maxtemp_c, result.forecast.forecastday[0].day.mintemp_f, result.forecast.forecastday[0].day.maxtemp_f, result.current.feelslike_c, result.current.feelslike_f, result.current.humidity, result.current.condition.text, result.current.is_day);
           _ui__WEBPACK_IMPORTED_MODULE_1__["default"].appendWeatherConditionData(_ui__WEBPACK_IMPORTED_MODULE_1__["default"].getWeatherImageContainer(), result.current.condition.text, result.current.is_day);
           _ui__WEBPACK_IMPORTED_MODULE_1__["default"].appendForecast(result.forecast.forecastday);
           return _context.abrupt("return", result);
@@ -894,4 +926,4 @@ document.addEventListener("DOMContentLoaded", _modules_ui__WEBPACK_IMPORTED_MODU
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle.04fa664c1ad477f1cfe4.js.map
+//# sourceMappingURL=bundle.589f962cc9dccde0b748.js.map

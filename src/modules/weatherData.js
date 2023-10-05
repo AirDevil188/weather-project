@@ -23,9 +23,13 @@ export async function getData(location) {
     UI.appendWeatherInformation(
       result.location.name,
       result.current.temp_c,
+      result.current.temp_f,
       result.forecast.forecastday[0].day.mintemp_c,
       result.forecast.forecastday[0].day.maxtemp_c,
+      result.forecast.forecastday[0].day.mintemp_f,
+      result.forecast.forecastday[0].day.maxtemp_f,
       result.current.feelslike_c,
+      result.current.feelslike_f,
       result.current.humidity,
       result.current.condition.text,
       result.current.is_day

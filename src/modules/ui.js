@@ -43,10 +43,14 @@ export default class UI {
   // render weather information on the screen //
   static appendWeatherInformation(
     location,
-    temperature,
+    temperatureC,
+    temperatureF,
     tempCMin,
     tempCMax,
-    feelsLike,
+    tempFMin,
+    tempFMax,
+    feelsLikeC,
+    feelsLikeF,
     humidity,
     condition
   ) {
@@ -60,6 +64,9 @@ export default class UI {
     const weatherInformationContainer = document.createElement("div");
     const weatherImageContainer = document.createElement("div");
     const additionalInformationContainer = document.createElement("div");
+    const changeTempUnitButton = document.querySelector(
+      ".change-temp-unit-button"
+    );
 
     weatherContainer.classList.add("weather-container");
 
@@ -82,15 +89,7 @@ export default class UI {
 
     locationName.textContent = location;
     weatherConditionPara.textContent = condition;
-    tempPara.textContent = Math.floor(temperature);
-    minMaxTempPara.textContent =
-      Math.floor(tempCMin) +
-      "°C / " +
-      Math.floor(tempCMax) +
-      "°C " +
-      "Feels Like " +
-      Math.floor(feelsLike) +
-      "°C ";
+
     humidityPara.textContent = humidity;
 
     this.getContentContainer().appendChild(weatherContainer);
@@ -104,10 +103,35 @@ export default class UI {
     weatherConditionContainer.appendChild(weatherConditionPara);
     additionalInformationContainer.appendChild(minMaxTempPara);
     additionalInformationContainer.appendChild(humidityPara);
+
+    if (!changeTempUnitButton.classList.contains("temp-f")) {
+      tempPara.textContent = Math.floor(temperatureC) + "°C ";
+      minMaxTempPara.textContent =
+        Math.floor(tempCMin) +
+        "°C / " +
+        Math.floor(tempCMax) +
+        "°C " +
+        "Feels Like " +
+        Math.floor(feelsLikeC) +
+        "°C ";
+    } else {
+      tempPara.textContent = Math.floor(temperatureF) + "°F ";
+      minMaxTempPara.textContent =
+        Math.floor(tempFMin) +
+        "°F / " +
+        Math.floor(tempFMax) +
+        "°F " +
+        "Feels Like " +
+        Math.floor(feelsLikeF) +
+        "°F ";
+    }
     weatherImageContainer.appendChild(tempPara);
   }
 
   static appendForecast(forecastObject) {
+    const changeTempUnitButton = document.querySelector(
+      ".change-temp-unit-button"
+    );
     this.clearForecastContainer();
     const forecastTableContainer = document.createElement("div");
 
@@ -130,36 +154,18 @@ export default class UI {
 
     for (let i = 0; i < this.getAllDataCells().length; i++) {
       this.getAllDataCells()[0].textContent = threeDayArray[0].date;
-      this.getAllDataCells()[1].textContent =
-        Math.floor(threeDayArray[0].day.mintemp_c) +
-        "°C" +
-        " / " +
-        Math.floor(threeDayArray[0].day.maxtemp_c) +
-        "°C";
       this.getAllDataCells()[3].textContent =
         threeDayArray[0].day.condition.text;
       this.getAllDataCells()[4].textContent =
         threeDayArray[0].astro.sunrise + " / " + threeDayArray[0].astro.sunset;
 
       this.getAllDataCells()[5].textContent = threeDayArray[1].date;
-      this.getAllDataCells()[6].textContent =
-        Math.floor(threeDayArray[1].day.mintemp_c) +
-        "°C" +
-        " / " +
-        Math.floor(threeDayArray[1].day.maxtemp_c) +
-        "°C";
       this.getAllDataCells()[8].textContent =
         threeDayArray[1].day.condition.text;
       this.getAllDataCells()[9].textContent =
         threeDayArray[1].astro.sunrise + " / " + threeDayArray[1].astro.sunset;
 
       this.getAllDataCells()[10].textContent = threeDayArray[2].date;
-      this.getAllDataCells()[11].textContent =
-        Math.floor(threeDayArray[2].day.mintemp_c) +
-        "°C" +
-        " / " +
-        Math.floor(threeDayArray[2].day.maxtemp_c) +
-        "°C";
       this.getAllDataCells()[13].textContent =
         threeDayArray[2].day.condition.text;
       this.getAllDataCells()[14].textContent =
@@ -181,6 +187,46 @@ export default class UI {
       threeDayArray[2].day.condition.text,
       1
     );
+
+    if (!changeTempUnitButton.classList.contains("temp-f")) {
+      this.getAllDataCells()[1].textContent =
+        Math.floor(threeDayArray[0].day.mintemp_c) +
+        "°C" +
+        " / " +
+        Math.floor(threeDayArray[0].day.maxtemp_c) +
+        "°C";
+      this.getAllDataCells()[6].textContent =
+        Math.floor(threeDayArray[1].day.mintemp_c) +
+        "°C" +
+        " / " +
+        Math.floor(threeDayArray[1].day.maxtemp_c) +
+        "°C";
+      this.getAllDataCells()[11].textContent =
+        Math.floor(threeDayArray[2].day.mintemp_c) +
+        "°C" +
+        " / " +
+        Math.floor(threeDayArray[2].day.maxtemp_c) +
+        "°C";
+    } else {
+      this.getAllDataCells()[1].textContent =
+        Math.floor(threeDayArray[0].day.mintemp_f) +
+        "°F" +
+        " / " +
+        Math.floor(threeDayArray[0].day.maxtemp_f) +
+        "°F";
+      this.getAllDataCells()[6].textContent =
+        Math.floor(threeDayArray[1].day.mintemp_f) +
+        "°F" +
+        " / " +
+        Math.floor(threeDayArray[1].day.maxtemp_f) +
+        "°F";
+      this.getAllDataCells()[11].textContent =
+        Math.floor(threeDayArray[2].day.mintemp_f) +
+        "°F" +
+        " / " +
+        Math.floor(threeDayArray[2].day.maxtemp_f) +
+        "°F";
+    }
 
     this.getAllDataCells()[2].classList.add("data-icon");
     this.getAllDataCells()[7].classList.add("data-icon");
@@ -413,6 +459,19 @@ export default class UI {
         element.insertAdjacentElement("afterbegin", imageElement);
         break;
     }
+  }
+
+  /* fetch the date again so that we can display F or C units on the screen */
+
+  static changeWeatherUnit() {
+    const changeTempUnitButton = document.querySelector(
+      ".change-temp-unit-button"
+    );
+    const h3TitleLocation = document.querySelector("h3").innerText;
+    if (!changeTempUnitButton.classList.contains("temp-f")) {
+      changeTempUnitButton.textContent = "Change to °F";
+    } else changeTempUnitButton.textContent = "Change to °C";
+    getData(h3TitleLocation);
   }
 
   //clear content of forecast container //
