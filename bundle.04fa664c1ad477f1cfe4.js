@@ -148,7 +148,7 @@ var UI = /*#__PURE__*/function () {
       locationName.textContent = location;
       weatherConditionPara.textContent = condition;
       tempPara.textContent = Math.floor(temperature);
-      minMaxTempPara.textContent = Math.floor(tempCMin) + "° / " + Math.floor(tempCMax) + "° " + "Feels Like " + Math.floor(feelsLike) + "° ";
+      minMaxTempPara.textContent = Math.floor(tempCMin) + "°C / " + Math.floor(tempCMax) + "°C " + "Feels Like " + Math.floor(feelsLike) + "°C ";
       humidityPara.textContent = humidity;
       this.getContentContainer().appendChild(weatherContainer);
       weatherContainer.appendChild(locationInformationContainer);
@@ -181,15 +181,15 @@ var UI = /*#__PURE__*/function () {
       }
       for (var _i = 0; _i < this.getAllDataCells().length; _i++) {
         this.getAllDataCells()[0].textContent = threeDayArray[0].date;
-        this.getAllDataCells()[1].textContent = Math.floor(threeDayArray[0].day.mintemp_c) + "°" + " / " + Math.floor(threeDayArray[0].day.maxtemp_c) + "°";
+        this.getAllDataCells()[1].textContent = Math.floor(threeDayArray[0].day.mintemp_c) + "°C" + " / " + Math.floor(threeDayArray[0].day.maxtemp_c) + "°C";
         this.getAllDataCells()[3].textContent = threeDayArray[0].day.condition.text;
         this.getAllDataCells()[4].textContent = threeDayArray[0].astro.sunrise + " / " + threeDayArray[0].astro.sunset;
         this.getAllDataCells()[5].textContent = threeDayArray[1].date;
-        this.getAllDataCells()[6].textContent = Math.floor(threeDayArray[1].day.mintemp_c) + "°" + " / " + Math.floor(threeDayArray[1].day.maxtemp_c) + "°";
+        this.getAllDataCells()[6].textContent = Math.floor(threeDayArray[1].day.mintemp_c) + "°C" + " / " + Math.floor(threeDayArray[1].day.maxtemp_c) + "°C";
         this.getAllDataCells()[8].textContent = threeDayArray[1].day.condition.text;
         this.getAllDataCells()[9].textContent = threeDayArray[1].astro.sunrise + " / " + threeDayArray[1].astro.sunset;
         this.getAllDataCells()[10].textContent = threeDayArray[2].date;
-        this.getAllDataCells()[11].textContent = Math.floor(threeDayArray[2].day.mintemp_c) + "°" + " / " + Math.floor(threeDayArray[2].day.maxtemp_c) + "°";
+        this.getAllDataCells()[11].textContent = Math.floor(threeDayArray[2].day.mintemp_c) + "°C" + " / " + Math.floor(threeDayArray[2].day.maxtemp_c) + "°C";
         this.getAllDataCells()[13].textContent = threeDayArray[2].day.condition.text;
         this.getAllDataCells()[14].textContent = threeDayArray[2].astro.sunrise + " / " + threeDayArray[2].astro.sunset;
       }
@@ -894,4 +894,4 @@ document.addEventListener("DOMContentLoaded", _modules_ui__WEBPACK_IMPORTED_MODU
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle.4b10f95c878d08825edd.js.map
+//# sourceMappingURL=bundle.04fa664c1ad477f1cfe4.js.map
