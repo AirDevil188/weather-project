@@ -85,12 +85,12 @@ export default class UI {
     tempPara.textContent = Math.floor(temperature);
     minMaxTempPara.textContent =
       Math.floor(tempCMin) +
-      "° / " +
+      "°C / " +
       Math.floor(tempCMax) +
-      "° " +
+      "°C " +
       "Feels Like " +
       Math.floor(feelsLike) +
-      "° ";
+      "°C ";
     humidityPara.textContent = humidity;
 
     this.getContentContainer().appendChild(weatherContainer);
@@ -132,10 +132,10 @@ export default class UI {
       this.getAllDataCells()[0].textContent = threeDayArray[0].date;
       this.getAllDataCells()[1].textContent =
         Math.floor(threeDayArray[0].day.mintemp_c) +
-        "°" +
+        "°C" +
         " / " +
         Math.floor(threeDayArray[0].day.maxtemp_c) +
-        "°";
+        "°C";
       this.getAllDataCells()[3].textContent =
         threeDayArray[0].day.condition.text;
       this.getAllDataCells()[4].textContent =
@@ -144,10 +144,10 @@ export default class UI {
       this.getAllDataCells()[5].textContent = threeDayArray[1].date;
       this.getAllDataCells()[6].textContent =
         Math.floor(threeDayArray[1].day.mintemp_c) +
-        "°" +
+        "°C" +
         " / " +
         Math.floor(threeDayArray[1].day.maxtemp_c) +
-        "°";
+        "°C";
       this.getAllDataCells()[8].textContent =
         threeDayArray[1].day.condition.text;
       this.getAllDataCells()[9].textContent =
@@ -156,10 +156,10 @@ export default class UI {
       this.getAllDataCells()[10].textContent = threeDayArray[2].date;
       this.getAllDataCells()[11].textContent =
         Math.floor(threeDayArray[2].day.mintemp_c) +
-        "°" +
+        "°C" +
         " / " +
         Math.floor(threeDayArray[2].day.maxtemp_c) +
-        "°";
+        "°C";
       this.getAllDataCells()[13].textContent =
         threeDayArray[2].day.condition.text;
       this.getAllDataCells()[14].textContent =

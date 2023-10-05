@@ -170,7 +170,7 @@ input:focus {
 }
 
 .current-temp::after {
-  content: "°";
+  content: "°C";
 }
 
 .min-max-temp {
