@@ -16,7 +16,8 @@
     rgb(202, 50, 50) 92.4%
   );
   --body-background-color: #2a2727;
-  --search-bar-border-color: rgb(242, 133, 0);
+  --button-background-color: rgb(242, 133, 0);
+  --button-hover-color: rgb(202, 50, 50);
 }
 
 /* general rules */
@@ -84,6 +85,10 @@ p {
   font-size: 5rem;
 }
 
+button:hover {
+  background-color: var(--button-hover-color);
+}
+
 /* form element */
 
 form {
@@ -102,12 +107,30 @@ input:focus {
   outline: none;
 }
 
+.button-container {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.change-temp-unit-button {
+  cursor: pointer;
+  color: #fff;
+  text-transform: uppercase;
+  background-color: var(--button-background-color);
+  border: 1px solid white;
+  border-radius: 15px;
+  outline: none;
+  padding: 1rem;
+}
+
 /* search button */
 .search-button {
   position: relative;
   cursor: pointer;
-  border: 6px solid var(--search-bar-border-color);
-  background-color: var(--search-bar-border-color);
+  border: 6px solid var(--button-background-color);
+  background-color: var(--button-background-color);
   border-left: none;
   color: white;
   border-bottom-right-radius: 15px;
@@ -116,10 +139,14 @@ input:focus {
   right: 10px;
 }
 
+.search-button:hover {
+  border-color: rgb(202, 50, 50);
+}
+
 .city-search-input {
   padding: 1rem;
   width: 250px;
-  border: 2px solid var(--search-bar-border-color);
+  border: 2px solid var(--button-background-color);
   height: 30px;
   border-radius: 15px;
 }
@@ -176,10 +203,6 @@ input:focus {
   font-size: 5rem;
   font-weight: 500;
   color: #fff;
-}
-
-.current-temp::after {
-  content: "°C";
 }
 
 .min-max-temp {
