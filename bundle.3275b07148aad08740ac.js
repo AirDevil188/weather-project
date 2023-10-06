@@ -181,8 +181,9 @@ var UI = /*#__PURE__*/function () {
       var changeTempUnitButton = document.querySelector(".change-temp-unit-button");
       this.clearForecastContainer();
       var forecastTableContainer = document.createElement("div");
-      var threeDayArray = forecastObject.slice(1, 4);
+      var threeDayArray = forecastObject.slice(0, 3);
       forecastTableContainer.classList.add("table-container");
+      console.log(threeDayArray);
       this.getForecastContainer().appendChild(forecastTableContainer);
       forecastTableContainer.appendChild(this.createTable(3, 5));
       for (var i = 0; i < this.getAlHeadCells().length; i++) {
@@ -926,4 +927,4 @@ document.addEventListener("DOMContentLoaded", _modules_ui__WEBPACK_IMPORTED_MODU
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle.589f962cc9dccde0b748.js.map
+//# sourceMappingURL=bundle.3275b07148aad08740ac.js.map
