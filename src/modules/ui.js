@@ -135,8 +135,9 @@ export default class UI {
     this.clearForecastContainer();
     const forecastTableContainer = document.createElement("div");
 
-    let threeDayArray = forecastObject.slice(1, 4);
+    let threeDayArray = forecastObject.slice(0, 3);
     forecastTableContainer.classList.add("table-container");
+    console.log(threeDayArray);
 
     this.getForecastContainer().appendChild(forecastTableContainer);
 
